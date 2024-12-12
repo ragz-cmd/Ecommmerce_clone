@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build files (React)
+frontend/build/
+
+# Other files to ignore
+npm-debug.log
+yarn-error.log
