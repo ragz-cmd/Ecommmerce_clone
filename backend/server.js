@@ -5,6 +5,7 @@ import productRoute from "./routes/products.routes.js";
 import cartRoute from "./routes/cart.routes.js";
 import checkoutRoute from "./routes/payment.routes.js";
 import couponRoute from "./routes/coupon.routes.js";
+import analyticRoute from "./routes/analytic.routes.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 
@@ -19,6 +20,7 @@ app.use("/api/products", productRoute);
 app.use("/api/cart", cartRoute);
 app.use("/api/checkout", checkoutRoute);
 app.use("/api/coupon", couponRoute);
+app.use("/api/analytics", analyticRoute);
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
