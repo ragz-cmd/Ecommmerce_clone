@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input {
+  caret-color: black; /* Sets the text caret (cursor) color to black */
+}
