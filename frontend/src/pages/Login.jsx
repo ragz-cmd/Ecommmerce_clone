@@ -10,17 +10,22 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import { useUserStore } from "../store/userStore";
 const Login = () => {
-  const loading = false;
+  const { login, loading, checkingAuth } = useUserStore();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    login(formData);
+    if (!checkingAuth) {
+      setFormData({ email: "", password: "" });
+    }
   };
+
   return (
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <motion.div

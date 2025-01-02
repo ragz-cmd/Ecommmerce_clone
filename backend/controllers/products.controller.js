@@ -1,5 +1,4 @@
-import express, { json } from "express";
-import Product from "../models/featuredProducts.model.js";
+import Product from "../models/products.model.js";
 import redis from "../lib/redis.js";
 import cloudinary from "../lib/cloudinary.js";
 

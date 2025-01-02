@@ -2,10 +2,7 @@ import Coupon from "../models/coupons.model.js";
 import razorpay from "../lib/razorpay.js";
 import Order from "../models/orders.model.js";
 import dotenv from "dotenv";
-import {
-  validatePaymentVerification,
-  validateWebhookSignature,
-} from "./dist/utils/razorpay-utils.js";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
 
 dotenv.config();
 

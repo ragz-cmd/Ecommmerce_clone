@@ -1,9 +1,9 @@
 import express from "express";
-import { adminRoute, protectRoute } from "../middleware/auth.middleware.js";
+import { adminRoute, protectRoute } from "../middlewares/auth.middleware.js";
 import {
   getAnalyticsData,
   getDailySalesData,
-} from "../controllers/analytics.controller.js";
+} from "../controllers/analytics.controllers.js";
 
 const router = express.Router();
 
