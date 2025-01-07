@@ -1,15 +1,44 @@
-import express from "express";
-import {
-  getCoupon,
-  validateCoupon,
-} from "../controllers/coupons.controller.js";
+import Coupon from "../models/coupons.model.js";
 
-const router = express.Router();
+export const getCoupon = async (req, res) => {
+  try {
+    const coupon = await Coupon.findOne({
+      userId: req.user._id,
+      isActive: true,
+    });
+    res.json(coupon || null);
+  } catch (error) {
+    console.log("Error in getCoupon controller", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
-// Get active coupon for the logged-in user
-router.get("/active", getCoupon);
+export const validateCoupon = async (req, res) => {
+  try {
+    const { code } = req.body;
+    const coupon = await Coupon.findOne({
+      code: code,
+      userId: req.user._id,
+      isActive: true,
+    });
 
-// Validate a coupon by code
-router.post("/validate", validateCoupon);
+    if (!coupon) {
+      return res.status(404).json({ message: "Coupon not found" });
+    }
 
-export default router;
+    if (coupon.expirationDate < new Date()) {
+      coupon.isActive = false;
+      await coupon.save();
+      return res.status(404).json({ message: "Coupon expired" });
+    }
+
+    res.json({
+      message: "Coupon is valid",
+      code: coupon.code,
+      discountPercentage: coupon.discountPercentage,
+    });
+  } catch (error) {
+    console.log("Error in validateCoupon controller", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

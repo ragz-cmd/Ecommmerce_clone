@@ -1,9 +1,14 @@
 import { v2 } from "cloudinary";
 import dotenv from "dotenv";
+
+// Load environment variables
 dotenv.config();
-const cloudinary = v2.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+
+// Configure Cloudinary with environment variables
+v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
-export default cloudinary;
+
+export default v2; // Directly export the configured v2 object

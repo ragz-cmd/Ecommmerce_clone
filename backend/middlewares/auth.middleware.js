@@ -20,8 +20,6 @@ export const protectRoute = async (req, res, next) => {
       }
 
       req.user = user;
-      console.log(user.name); // Logs the user's name
-      console.log(decoded.userId); // Logs the user ID from the token
 
       next();
     } catch (error) {

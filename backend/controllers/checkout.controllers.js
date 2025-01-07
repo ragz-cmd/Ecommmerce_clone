@@ -58,7 +58,7 @@ export const checkoutService = async (req, res) => {
     res.status(200).json({
       razorpayOrderId: razorpayOrder.id,
       razorpayKey: process.env.RAZORPAY_ID,
-      totalAmount: totalAmount / 100, // Convert back to INR for client display
+      totalAmount: totalAmount, // Convert back to INR for client display
     });
   } catch (error) {
     console.error("Checkout error:", error);
@@ -114,18 +114,12 @@ export const checkoutSuccess = async (req, res) => {
 
     await newOrder.save();
 
-    res.status(200).json({
-      success: true,
-      message:
-        "Payment successful, order created, and coupon deactivated if used.",
-      orderId: newOrder._id,
-    });
+    res.redirect(
+      `${process.env.CLIENT_URL}/payment-status?orderId=${newOrder.razorpayOrderId}`
+    );
   } catch (error) {
     console.error("Error processing successful checkout:", error);
-    res.status(500).json({
-      message: "Error in payment verification",
-      error: error.message,
-    });
+    res.redirect(`${process.env.CLIENT_URL}/payment-status?orderId=failed`);
   }
 };
 

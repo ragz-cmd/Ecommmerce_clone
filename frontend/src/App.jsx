@@ -4,15 +4,21 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import PaymentStatus from "./pages/PaymentStatus";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { useUserStore } from "./store/userStore";
 import LoadingSpinner from "./components/LoadingSpinner";
+import Category from "./pages/Category";
+import Cart from "./pages/Cart";
+
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+
   useEffect(() => {
     checkAuth(user);
   }, [checkAuth]);
+
   if (checkingAuth) return <LoadingSpinner />;
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
@@ -38,6 +44,12 @@ function App() {
             path="/dashboard-admin"
             element={user?.role === "admin" ? <Admin /> : <Navigate to="/" />}
           />
+          <Route
+            path="/payment-status"
+            element={user ? <PaymentStatus /> : <Navigate to="/" />}
+          />
+          <Route path="/category/:category" element={<Category />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </div>
       <Toaster />

@@ -3,16 +3,36 @@ import Product from "../models/products.model.js";
 export const getAllCartItems = async (req, res) => {
   try {
     const User = req.user;
-    const products = await Product.find({ _id: { $in: User.cartItems } });
-    const cartItems = products.map((product) => {
-      const item = User.cartItems.find((item) => item.id === product._id);
-      return { ...product.toJSON(), quantity: item.quantity };
+
+    if (!User.cartItems || !Array.isArray(User.cartItems)) {
+      return res.status(400).json({ message: "Cart is empty or invalid" });
+    }
+
+    const products = await Product.find({
+      _id: { $in: User.cartItems.map((item) => item.id) },
     });
+
+    const cartItems = products.map((product) => {
+      const item = User.cartItems.find(
+        (item) => item.id.toString() === product._id.toString()
+      );
+      return {
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        description: product.description,
+        image: product.image,
+        category: product.category,
+        quantity: item?.quantity || 0, // Default quantity to 0 if item is not found
+      };
+    });
+
     res.status(200).json(cartItems);
   } catch (error) {
+    console.error("Error fetching cart items:", error);
     res
       .status(500)
-      .json({ message: "internal server error", error: error.message });
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
@@ -37,7 +57,7 @@ export const addCartItem = async (req, res) => {
   }
 };
 
-export const removeAllCartItem = async (req, res) => {
+export const removeCartItem = async (req, res) => {
   try {
     const User = req.user;
     const { productId } = req.body;
